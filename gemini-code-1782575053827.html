@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GCP Archive Portal</title>
+    <style>
+        :root {
+            --bg-color: #12161a;
+            --panel-bg: #1a2126;
+            --accent-color: #3b82f6;
+            --text-main: #e2e8f0;
+            --text-muted: #94a3b8;
+            --border-color: #2e3b4e;
+        }
+
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Sidebar Navigation */
+        nav {
+            width: 280px;
+            background-color: var(--panel-bg);
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .header-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            color: #fff;
+            margin-bottom: 5px;
+        }
+
+        .header-subtitle {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 30px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 15px;
+        }
+
+        .nav-section {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--accent-color);
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .nav-links {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 25px 0;
+        }
+
+        .nav-links li a {
+            display: block;
+            padding: 10px 12px;
+            color: var(--text-main);
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            margin-bottom: 4px;
+            transition: background 0.2s;
+            cursor: pointer;
+        }
+
+        .nav-links li a:hover {
+            background-color: rgba(59, 130, 246, 0.1);
+            color: #fff;
+        }
+
+        .nav-links li a.active {
+            background-color: var(--accent-color);
+            color: #fff;
+        }
+
+        /* Main Content Container */
+        main {
+            flex-grow: 1;
+            padding: 40px;
+            overflow-y: auto;
+            box-sizing: border-box;
+        }
+
+        /* Document Styling */
+        .document-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            color: #1c1c1c;
+            padding: 50px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            border-top: 8px solid #1e293b;
+            min-height: 11in; 
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        .doc-header {
+            text-align: center;
+            border-bottom: 2px solid #1e293b;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        .doc-header h1 {
+            margin: 0;
+            font-size: 1.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .doc-meta-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+            font-size: 0.85rem;
+        }
+
+        .doc-meta-table td {
+            border: 1px solid #cbd5e1;
+            padding: 8px 12px;
+        }
+
+        .meta-label {
+            font-weight: bold;
+            background-color: #f1f5f9;
+            width: 25%;
+            text-transform: uppercase;
+        }
+
+        .doc-body {
+            line-height: 1.6;
+            font-size: 1rem;
+        }
+
+        .doc-image, .doc-video {
+            width: 100%;
+            max-height: 400px;
+            object-fit: contain;
+            margin: 25px 0;
+            border: 1px solid #cbd5e1;
+            background-color: #f8fafc;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar Navigation -->
+    <nav>
+        <div class="header-title">GCP Files</div>
+        <div class="header-subtitle">Central Records System</div>
+
+        <div class="nav-section">Active Classifications</div>
+        <ul class="nav-links">
+            <li><a onclick="switchFile('overview')" id="link-overview" class="active">File #01-A: Owner Profile</a></li>
+            <li><a onclick="switchFile('pending')" id="link-pending">File #02-B: Co-Owner Profile</a></li>
+            <li><a onclick="switchFile('archive')" id="link-archive">File #03-C: Mommas Profile</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Workspace -->
+    <main>
+        <div class="document-container">
+            
+            <!-- Document Header -->
+            <div class="doc-header">
+                <h1 id="doc-title">General Classification Portal</h1>
+                <p style="margin: 5px 0 0 0; font-size: 0.9rem; color: #64748b; letter-spacing: 2px;">OFFICIAL RECORD</p>
+            </div>
+
+            <!-- Metadata Details Table -->
+            <table class="doc-meta-table">
+                <tr>
+                    <td class="meta-label">Subject Name</td>
+                    <td id="meta-id">-</td>
+                    <td class="meta-label">Designation / Role</td>
+                    <td id="meta-date">-</td>
+                </tr>
+                <tr>
+                    <td class="meta-label">Classification</td>
+                    <td id="meta-class" style="color: #b91c1c; font-weight: bold;">-</td>
+                    <td class="meta-label">Origin Location</td>
+                    <td id="meta-status">-</td>
+                </tr>
+            </table>
+
+            <!-- Document Content Area -->
+            <div class="doc-body" id="doc-body-content">
+                <!-- Content injected dynamically by JS -->
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        // Data Store for all your different pages
+        const fileData = {
+            overview: {
+                title: "Personnel Profile: Case #01-A",
+                id: "Connor Joe Baca",
+                date: "Primary Owner / GCP Founder (Jack)",
+                classification: "FOUNDER ACCESS ONLY",
+                status: "St. Rose Dominican Hospital (Siena Campus, Henderson, NV) [DOB: April 13, 2009]",
+                content: `
+                    <p><strong>EXECUTIVE PROFILE / OBSERVED STATUS REPORT</strong></p>
+                    <p>This file details the foundational parameters of the primary system owner, Connor Joe Baca (known uniformly throughout network files as Jack).</p>
+                    <p><strong>Security Notice:</strong> Recent administrative internal reviews have flagged erratic psychological indicators and uncharacteristic behavioral trends. As primary system owner, security override profiles remain active despite ongoing situational shifts.</p>
+                    
+                    <img src="dih.png" class="doc-image" alt="System Owner Attachment: dih.png">
+                    
+                    <p><strong>RECOVERED AUDIO/VISUAL EVIDENCE</strong></p>
+                    <p>The following attachment has been indexed into the central repository under directory reference node 2062:</p>
+                    
+                    <video class="doc-video" controls preload="metadata">
+                        <source src="File2062Corrupted.mp4" type="video/mp4">
+                        Your browser does not support the video tag or the specified format.
+                    </video>
+
+                    <p>The following additional log update asset has been appended to the primary repository partition:</p>
+                    
+                    <video class="doc-video" controls preload="metadata">
+                        <source src="0627 (2)(2).mp4" type="video/mp4">
+                        Your browser does not support the video tag or the specified format.
+                    </video>
+                    
+                    <p>Log adjustments and secondary file nodes are accessible via authorized administrative credentials.</p>
+                `
+            },
+            pending: {
+                title: "Personnel Profile: Case #02-B",
+                id: "Stanley Lynn Pitts",
+                date: "Co-Owner / GCP Administrator (Bo)",
+                classification: "AUTHORIZED PERSONNEL",
+                status: "Fort Worth, Texas",
+                content: `
+                    <p><strong>EXECUTIVE RECORD / PARTNERSHIP BRIEF</strong></p>
+                    <p>This file details the credentials and administrative background of Stanley Lynn Pitts (referenced in active logs as Bo).</p>
+                    <p>As a designated co-owner within the General Classification Portal registry, the subject maintains administrative oversight and shared system authority alongside the primary system founder.</p>
+                    
+                    <img src="bobo.png" class="doc-image" alt="Administrative Attachment: bobo.png">
+                    
+                    <p><strong>RECOVERED AUDIO/VISUAL EVIDENCE</strong></p>
+                    <p>The following technical data file log has been appended to this administrator profile:</p>
+
+                    <video class="doc-video" controls preload="metadata">
+                        <source src="0627 (2)(1).mp4" type="video/mp4">
+                        Your browser does not support the video tag or the specified format.
+                    </video>
+
+                    <p>The following additional visual entry has been verified and synced to this ledger item:</p>
+
+                    <video class="doc-video" controls preload="metadata">
+                        <source src="0627 (3)(1).mp4" type="video/mp4">
+                        Your browser does not support the video tag or the specified format.
+                    </video>
+
+                    <p>Operational strategies, localized field operations out of Texas, and structural records will be documented within this authorized ledger partition.</p>
+                `
+            },
+            archive: {
+                title: "Corporate Registry: Case #03-C",
+                id: "Jennifer Ann Wilson",
+                date: "LLC Purchaser / Corporate Signatory (Momma)",
+                classification: "MANAGEMENT / REGISTRY PROFILE",
+                status: "Corporate Records Unit",
+                content: `
+                    <p><strong>REGISTRATION SUMMARY & OBSERVATION ANALYSIS</strong></p>
+                    <p>This file catalogs the financial and statutory origin parameters for the GCP framework. Corporate tracking indexes verify Jennifer Ann Wilson as the executive entity responsible for purchasing and executing the legal LLC structure behind the General Classification Portal.</p>
+                    <p><strong>Security Notice:</strong> Internal field reports have flagged an escalation in volatile behavioral markers and psychological destabilization patterns within this profile partition. Despite shifting behavioral metrics, tracking elements confirm her unique legal footprint on initial system capitalization assets.</p>
+                    
+                    <img src="mom.png" class="doc-image" alt="Registrant Attachment: mom.png">
+
+                    <p><strong>RECOVERED AUDIO/VISUAL EVIDENCE</strong></p>
+                    <p>The following video log asset has been appended to this entity file partition:</p>
+
+                    <video class="doc-video" controls preload="metadata">
+                        <source src="0627 (2)_corrupted (1).mp4" type="video/mp4">
+                        Your browser does not support the video tag or the specified format.
+                    </video>
+                    
+                    <p>Additional corporate validation links, documentation certificates, and operational authorizations will be updated under this ledger segment upon legal processing.</p>
+                `
+            }
+        };
+
+        // Function to switch the page contents dynamically
+        function switchFile(fileKey) {
+            const data = fileData[fileKey];
+            if (!data) return;
+
+            // Update Text Contents
+            document.getElementById('doc-title').innerText = data.title;
+            document.getElementById('meta-id').innerText = data.id;
+            document.getElementById('meta-date').innerText = data.date;
+            document.getElementById('meta-class').innerText = data.classification;
+            document.getElementById('meta-status').innerText = data.status;
+            document.getElementById('doc-body-content').innerHTML = data.content;
+
+            // Update UI Sidebar active states
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            const activeLink = document.getElementById(`link-${fileKey}`);
+            if (activeLink) {
+                activeLink.classList.add('active');
+            }
+        }
+
+        // Initialize with default overview content on load
+        window.onload = function() {
+            switchFile('overview');
+        };
+    </script>
+</body>
+</html>
